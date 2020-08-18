@@ -22,7 +22,7 @@ namespace BattleShip.API.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-        private IPlayerService playerService;
+        private readonly IPlayerService playerService;
         private readonly IConfiguration config;
 
         public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IPlayerService service, IConfiguration config)
@@ -60,7 +60,7 @@ namespace BattleShip.API.Controllers
 
             if (!result.Succeeded)
             {
-                return BadRequest("Incorrect login or password");
+                return Unauthorized("Incorrect login or password");
             }
 
             var userToVerify = await userManager.FindByNameAsync(model.UserName);
@@ -86,8 +86,46 @@ namespace BattleShip.API.Controllers
 
             return Ok(new
             {
+                userName = model.UserName,
                 token = tokenHandler.WriteToken(token)
             });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var id = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (id != null)
+            {
+                var user = await userManager.FindByIdAsync(id);
+                var claims = new[]
+               {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.UserName)
+                };
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("AppSettings:Token").Value));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(claims),
+                    Expires = DateTime.Now.AddDays(1),
+                    SigningCredentials = creds
+                };
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+
+                return Ok(new
+                {
+                    userName = user.UserName,
+                    token = tokenHandler.WriteToken(token)
+                });
+            }
+            return Unauthorized();
+
         }
     }
 }
