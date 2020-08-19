@@ -2,6 +2,7 @@ import { RootStore } from "./rootStore";
 import { observable, action, reaction } from "mobx";
 
 export default class CommonStore {
+  
   rootStore: RootStore;
 
   constructor(rootStore: RootStore) {

@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { IUser, IUserFormValues, IUserLoginValues } from '../models/user';
 import { toast } from 'react-toastify';
 import { history } from '../..';
+import { IGameForAccount } from '../models/game';
 
 axios.defaults.baseURL = 'https://localhost:44336/api';
 
@@ -46,8 +47,13 @@ const User = {
     current: (): Promise<IUser> => requests.get('/account'),
     login: (user: IUserLoginValues): Promise<IUser> => requests.post(`account/login`, user),
     register: (user: IUserFormValues): Promise<IUser> => requests.post(`account/register`, user)
-}
+};
+
+const Game = {
+    listProfileGames: (): Promise<IGameForAccount[]> => requests.get('/PersonalAccount')
+};
 
 export default {
-    User
+    User,
+    Game
 }

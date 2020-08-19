@@ -86,6 +86,7 @@ namespace BattleShip.API.Controllers
 
             return Ok(new
             {
+                Id = userToVerify.Id,
                 userName = model.UserName,
                 token = tokenHandler.WriteToken(token)
             });
@@ -120,6 +121,7 @@ namespace BattleShip.API.Controllers
 
                 return Ok(new
                 {
+                    Id = Convert.ToInt32(id),
                     userName = user.UserName,
                     token = tokenHandler.WriteToken(token)
                 });
