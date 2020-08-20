@@ -22,6 +22,7 @@ export default class GameStore {
         this.loadingProfile = false;
       });
     } catch (error) {
+      this.loadingProfile = false;
       console.log(error);
     }
   };
