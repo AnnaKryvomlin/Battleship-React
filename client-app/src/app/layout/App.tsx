@@ -16,6 +16,8 @@ import { RootStoreContext } from "../stores/rootStore";
 import LoadingComponent from "./LoadingComponent";
 import RegisterForm from "../../features/user/RegisterForm";
 import PersonalAccount from "../../features/personalAccount/PersonalAccount";
+import Statistic from "../../features/Statistics/Statistic";
+import PrivateRoute from "./PrivateRoute";
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   const rootStore = useContext(RootStoreContext);
@@ -39,10 +41,11 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
         <Container style={{ marginTop: "7em" }}>
           <Switch>
             <Route exact path="/" component={HomePage} />
-            <Route exact path="/creategame" component={PrepareGame} />
+            <PrivateRoute exact path="/creategame" component={PrepareGame} />
             <Route exact path="/login" component={LoginForm} />
             <Route exact path="/register" component={RegisterForm} />
-            <Route exact path="/account" component={PersonalAccount} />
+            <PrivateRoute  exact path="/profile/:username" component={PersonalAccount} />
+            <PrivateRoute exact path="/statistic" component={Statistic} />
             <Route component={NotFound} />
           </Switch>
         </Container>

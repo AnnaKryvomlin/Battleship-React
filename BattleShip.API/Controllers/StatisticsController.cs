@@ -43,7 +43,9 @@ namespace BattleShip.API.Controllers
 
             Response.AddPagination(pagedRecords.CurrentPage, pagedRecords.PageSize, pagedRecords.TotalCount, pagedRecords.TotalPages);
 
-            return Ok(statisticsRecords);
+            return Ok(new {
+                totalPages = pagedRecords.TotalCount,
+                statisticsRecords});
         }
     }
 }

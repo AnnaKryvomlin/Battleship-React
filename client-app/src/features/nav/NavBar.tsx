@@ -14,6 +14,7 @@ const NavBar: React.FC = () => {
           Battleship
         </Menu.Item>
         {user && <Menu.Item name="Start Game" as={NavLink} to="/creategame" />}
+        {user && <Menu.Item name="Statistic" as={NavLink} to="/statistic" />}
         {user && (
           <Menu.Item position="right">
             <Dropdown pointing="top left" text={user.userName}>
@@ -33,8 +34,7 @@ const NavBar: React.FC = () => {
           <Menu.Item position="right" name="Login" as={NavLink} to="/login" />
         )}
         {!user && (
-          <Menu.Item
-          
+          <Menu.Item         
             name="Register"
             as={NavLink}
             to="/register"

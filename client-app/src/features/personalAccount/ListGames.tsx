@@ -9,11 +9,10 @@ const ListGames = () => {
   const { user, getCurrentUserId } = rootStore.userStore;
 
   function CheckMove(id: number) {
-   if (id === getCurrentUserId()) {
-   return <Card.Content extra>Your Move</Card.Content>
-}
+    if (id === getCurrentUserId()) {
+      return <Card.Content extra>Your Move</Card.Content>;
+    }
   }
-
 
   return (
     <Card.Group>
