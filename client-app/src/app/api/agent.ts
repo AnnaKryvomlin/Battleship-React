@@ -3,7 +3,8 @@ import { IUser, IUserFormValues, IUserLoginValues } from "../models/user";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { IGameForAccount } from "../models/game";
-import { IStatistic, IStatisticPaged } from "../models/statistic";
+import { IStatisticPaged } from "../models/statistic";
+import { ICoordinate } from "../models/coordinate";
 
 axios.defaults.baseURL = "https://localhost:44336/api";
 
@@ -66,6 +67,7 @@ const User = {
 const Game = {
   listProfileGames: (): Promise<IGameForAccount[]> =>
     requests.get("/PersonalAccount"),
+    myCoordsForGame: (id: number): Promise<ICoordinate[]> => requests.get(`/game/my_coords/${id}`)
 };
 
 const Statistic = {
