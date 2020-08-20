@@ -50,7 +50,6 @@ const LoginForm = () => {
             positive
             content="Login"
           />
-          <pre>{JSON.stringify(form.getState(), null, 2)}</pre>
         </Form>
       )}
     />

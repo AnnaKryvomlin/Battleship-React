@@ -7,7 +7,7 @@ namespace BattleShip.API.ViewModels
 {
     public class GameForAccountViewModel
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public int CurrentMovePlayerId { get; set; }
     }
 }

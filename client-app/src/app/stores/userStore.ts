@@ -3,6 +3,7 @@ import { observable, computed, action, runInAction } from "mobx";
 import agent from "../api/agent";
 import { RootStore } from "./rootStore";
 import { history } from "../..";
+import { Console } from "console";
 
 export default class UserStore {
     rootStore: RootStore;
@@ -12,10 +13,15 @@ export default class UserStore {
     }
 
    @observable user: IUser | null = null;
-
+   @observable userId: number | null = null;
 
    @computed get isLoggedIn() {
        return !!this.user;
+   }
+
+   @action getCurrentUserId = () => {
+       const id =  this.userId;
+       return id;
    }
 
    @action login = async(values: IUserLoginValues) => {
@@ -24,6 +30,7 @@ export default class UserStore {
            runInAction(() =>
            {
             this.user = user;
+            this.userId = user.id;
            })
            this.rootStore.commonStore.setToken(user.token);
            history.push('/');
@@ -38,6 +45,7 @@ export default class UserStore {
            const user = await agent.User.current();
            runInAction(() => {
            this.user = user;
+           this.userId = user.id;
            })
        }
        catch(error) {
@@ -48,6 +56,7 @@ export default class UserStore {
    @action logout =() => {
        this.rootStore.commonStore.setToken(null);
        this.user = null;
+       this.userId = null;
        history.push('/');
    }
 

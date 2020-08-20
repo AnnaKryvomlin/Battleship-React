@@ -70,7 +70,6 @@ const RegisterForm = () => {
             positive
             content="Register"
           />
-          <pre>{JSON.stringify(form.getState(), null, 2)}</pre>
         </Form>
       )}
     />
