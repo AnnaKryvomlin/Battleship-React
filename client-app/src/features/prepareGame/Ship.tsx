@@ -7,14 +7,14 @@ const shipStyle: React.CSSProperties = {
     cursor: 'move',
     height: 40,
     background: 'red',
-    border: '2px solid black'
+    border: '2px solid black',
+    position: "absolute"
   }
 
 
-const Ship : React.FC<{size: number}> = ({size}) => {
-    let ship: IShip;
+const Ship : React.FC<{ship: IShip}> = ({ship}) => {
     const [{ isDragging }, drag] = useDrag({
-      item: { type: 'ship' },
+      item: { type: 'ship', ship },
       collect: (monitor) => ({
         isDragging: !!monitor.isDragging(),
       }),
@@ -25,7 +25,7 @@ const Ship : React.FC<{size: number}> = ({size}) => {
         style={{
           ...shipStyle,
           opacity: isDragging ? 0.5 : 1,
-          width: 40*size
+          width: 40*ship.size
         }}
       >
       </div>

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Form, Label, Button, Checkbox } from "semantic-ui-react";
+import { Form, Button } from "semantic-ui-react";
 import TextInput from "../../app/common/form/TextInput";
 import { Form as FinalForm, Field } from "react-final-form";
 import { RootStoreContext } from "../../app/stores/rootStore";

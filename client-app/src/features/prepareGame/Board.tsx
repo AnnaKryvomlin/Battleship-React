@@ -1,17 +1,25 @@
-import React from "react";
-import { IShip } from "../../app/models/ship";
+import React, { useState, useEffect, useContext } from "react";
 import BoardSquare from "./BoardSquare";
+import Ship from "./Ship";
+import { RootStoreContext } from "../../app/stores/rootStore";
 
 const boardStyle: React.CSSProperties = {
-    width: '400px',
-    height: '400px',
-    display: 'flex',
-    flexWrap: 'wrap',
-  }
+  width: "400px",
+  height: "400px",
+  display: "flex",
+  flexWrap: "wrap",
+};
 
 const Board = () => {
-  let board: Array<Array<JSX.Element>> = [];
-  setBoard();
+  const rootStore = useContext(RootStoreContext);
+  const { ships, shipChange } = rootStore.gameStore;
+
+  const [board, setMyBoard] = useState(Array<Array<JSX.Element>>([]));
+
+  useEffect(() => {
+    setBoard();
+  }, [ships, shipChange]);
+
   function setBoard() {
     const yLine: JSX.Element[][] = [];
     for (let y = 1; y <= 10; y++) {
@@ -22,19 +30,28 @@ const Board = () => {
       }
       yLine.push(xLine);
     }
-    board = yLine;
-    console.log(board);
+    setMyBoard(yLine);
+    console.log(ships);
+  }
+
+  function setShip(x: number, y: number) {
+    const shipForPosition = ships!.find((s) => s.x === x && s.y === y);
+    return shipForPosition !== undefined ? (
+      <Ship ship={shipForPosition} />
+    ) : null;
   }
 
   function renderSquare(x: number, y: number) {
     return (
       <div key={"x" + x + " y" + y}>
-        <BoardSquare x={x} y={y}></BoardSquare>
+        <BoardSquare x={x} y={y}>
+          {setShip(x, y)}
+        </BoardSquare>
       </div>
     );
   }
 
-return <div style={boardStyle}>{board}</div>;
+  return <div style={boardStyle}>{board} </div>;
 };
 
 export default Board;

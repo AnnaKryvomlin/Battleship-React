@@ -6,6 +6,7 @@ import { IGameForAccount } from "../models/game";
 import { IStatisticPaged } from "../models/statistic";
 import { ICoordinate } from "../models/coordinate";
 import { IRecord } from "../models/record";
+import { IShip } from "../models/ship";
 
 axios.defaults.baseURL = "https://localhost:44336/api";
 
@@ -74,6 +75,8 @@ const Game = {
     requests.get(`/game/enemy_coords/${id}`),
   recordsForGame: (id: number): Promise<IRecord[]> =>
     requests.get(`/game/get_records/${id}`),
+  createGame: (ships: IShip[]) => requests.post("/game/create_game", ships),
+  findGame: (ships: IShip[]) => requests.post("/game/find_game", ships),
 };
 
 const Statistic = {

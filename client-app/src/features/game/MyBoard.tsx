@@ -10,6 +10,13 @@ const boardStyle: React.CSSProperties = {
   flexWrap: "wrap",
 };
 
+const boxStyle: React.CSSProperties = {
+  width: 40,
+  height: 40,
+  border: "1px solid black",
+  position: "relative",
+};
+
 const MyBoard = () => {
   const rootStore = useContext(RootStoreContext);
   const { myCoords, myLoadFlag, myMove } = rootStore.gameStore;
@@ -35,38 +42,26 @@ const MyBoard = () => {
         let cell: JSX.Element;
         if (hasShip && mark) {
           cell = renderSquare(x, y, {
-            background: "red",
-            width: 40,
-            height: 40,
-            border: "1px solid black",
-            position: "relative",
+            ...boxStyle,
+            background: "red"
           });
         }
         if (!hasShip && mark) {
           cell = renderSquare(x, y, {
+            ...boxStyle,
             background: "yellow",
-            width: 40,
-            height: 40,
-            border: "1px solid black",
-            position: "relative",
           });
         }
         if (hasShip && !mark) {
           cell = renderSquare(x, y, {
+            ...boxStyle,
             background: "green",
-            width: 40,
-            height: 40,
-            border: "1px solid black",
-            position: "relative",
           });
         }
         if (!hasShip && !mark) {
           cell = renderSquare(x, y, {
+            ...boxStyle,
             background: "white",
-            width: 40,
-            height: 40,
-            border: "1px solid black",
-            position: "relative",
           });
         }
         xLine.push(cell!);

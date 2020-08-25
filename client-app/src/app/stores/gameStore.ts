@@ -11,6 +11,8 @@ import {
   HubConnectionBuilder,
   LogLevel,
 } from "@microsoft/signalr";
+import { IShip } from "../models/ship";
+import { toast } from "react-toastify";
 
 export default class GameStore {
   rootStore: RootStore;
@@ -31,6 +33,67 @@ export default class GameStore {
   @observable myMove: boolean = false;
   @observable finished = false;
   @observable finishedMessage = "";
+  @observable ships: IShip[] = [
+    { x: 1, y: 1, size: 1 },
+    { x: 3, y: 1, size: 1 },
+    { x: 5, y: 1, size: 1 },
+    { x: 7, y: 1, size: 1 },
+    { x: 1, y: 3, size: 2 },
+    { x: 5, y: 3, size: 2 },
+    { x: 8, y: 3, size: 2 },
+    { x: 1, y: 5, size: 3 },
+    { x: 5, y: 5, size: 3 },
+    { x: 1, y: 7, size: 4 },
+  ];
+  @observable shipChange = true;
+  @observable submitting = false;
+
+  @action changeShipsCoords = (x: number, y: number, newShip: IShip) => {
+    let ship = this.ships.find((s) => s.x === x && s.y === y);
+    ship = newShip;
+    this.changeShips();
+    console.log( this.shipChange);
+  }
+
+  @action changeShips = () => {
+    this.shipChange === true ? this.shipChange =false : this.shipChange =true;
+  }
+
+  @action createNewGame = async() => {
+    this.submitting = true;
+    try {
+      await agent.Game.createGame(this.ships)
+      runInAction('create activity', () => {
+        this.submitting = false;
+      })
+      history.push(`/profile/${this.rootStore.userStore.user}`)
+      alert("Game successfully created! Wait your partner....");
+    } catch (error) {
+      runInAction('create activity error', () => {
+        this.submitting = false;
+      })
+      toast.error('Problem submitting data');
+      console.log(error.response);
+    } 
+  }
+
+  @action findGame = async() => {
+    this.submitting = true;
+    try {
+      await agent.Game.findGame(this.ships)
+      runInAction('create activity', () => {
+        this.submitting = false;
+      })
+      history.push(`/profile/${this.rootStore.userStore.user}`)
+      alert("Wait your partner....");
+    } catch (error) {
+      runInAction('create activity error', () => {
+        this.submitting = false;
+      })
+      toast.error('Problem submitting data');
+      console.log(error.response);
+    } 
+  }
 
   @action createHubConnection = () => {
     this.hubConnection = new HubConnectionBuilder()

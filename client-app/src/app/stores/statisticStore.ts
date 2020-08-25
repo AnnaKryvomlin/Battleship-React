@@ -1,6 +1,6 @@
 import { RootStore } from "./rootStore";
-import { observable, action, runInAction, computed, $mobx } from "mobx";
-import { IStatistic, IStatisticPaged } from "../models/statistic";
+import { observable, action, runInAction, computed } from "mobx";
+import { IStatistic } from "../models/statistic";
 import agent from "../api/agent";
 
 export default class StatisticStore {
@@ -34,17 +34,17 @@ export default class StatisticStore {
   }
 
   @action changeSortName = () => {
-    this.sortName == 0 ? (this.sortName = 1) : (this.sortName = 0);
+    this.sortName === 0 ? (this.sortName = 1) : (this.sortName = 0);
     this.sortOrder = this.sortName;
   };
 
   @action changeMoveSort = () => {
-    this.moveSort == 2 ? (this.moveSort = 3) : (this.moveSort = 2);
+    this.moveSort === 2 ? (this.moveSort = 3) : (this.moveSort = 2);
     this.sortOrder = this.moveSort;
   };
 
   @action changeShipCountSort = () => {
-    this.ShipCountSort == 4
+    this.ShipCountSort === 4
       ? (this.ShipCountSort = 5)
       : (this.ShipCountSort = 4);
     this.sortOrder = this.ShipCountSort;
