@@ -15,7 +15,7 @@ const StatisticRecord = () => {
     <Table.Cell>{record.moveCount}</Table.Cell>
     <Table.Cell>{record.winnerShipsCount}</Table.Cell>
     <Table.Cell>{record.winnerShips.map((ship) => (
-    <span>{ship.size} - палубный {ship.injuredCells!= 0 && <span>/ранено {ship.injuredCells}</span>};</span> 
+    <span>{ship.size} - палубный {ship.injuredCells!== 0 && <span>/ранено {ship.injuredCells}</span>};</span> 
     ))}</Table.Cell>
   </Table.Row>
         )) }

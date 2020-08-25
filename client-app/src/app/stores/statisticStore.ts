@@ -29,7 +29,7 @@ export default class StatisticStore {
     params.append("name", this.name);
     params.append("filterMoveState", this.filterMoveState.toString());
     params.append("onlyIntactShips", this.onlyIntactShips.toString());
-    params.append("sortOrder", this.sortOrder.toString())
+    params.append("sortOrder", this.sortOrder.toString());
     return params;
   }
 
@@ -44,16 +44,18 @@ export default class StatisticStore {
   };
 
   @action changeShipCountSort = () => {
-    this.ShipCountSort == 4 ? (this.ShipCountSort = 5) : (this.ShipCountSort = 4);
+    this.ShipCountSort == 4
+      ? (this.ShipCountSort = 5)
+      : (this.ShipCountSort = 4);
     this.sortOrder = this.ShipCountSort;
   };
 
   @action setOnlyIntactOtion = (OIOption: boolean) => {
-    console.log(OIOption);
     this.onlyIntactShips = OIOption;
   };
 
   @action setName = (filterName: string) => {
+    if (filterName === undefined) filterName = "";
     this.name = filterName;
   };
 

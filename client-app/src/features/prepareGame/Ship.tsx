@@ -13,7 +13,7 @@ const shipStyle: React.CSSProperties = {
 
 const Ship : React.FC<{size: number}> = ({size}) => {
     let ship: IShip;
-    const [{ isDragging }, drag, preview] = useDrag({
+    const [{ isDragging }, drag] = useDrag({
       item: { type: 'ship' },
       collect: (monitor) => ({
         isDragging: !!monitor.isDragging(),

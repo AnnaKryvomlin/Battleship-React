@@ -20,7 +20,7 @@ const StatisticFilters = () => {
   } = rootStore.statisticStore;
 
   const handleFinalFormSubmit = (values: any) => {
-    console.log(values);
+//    values.name !== undefined ? values.name : "";
     setName(values.name);
     setFilter(values.filter);
     setOnlyIntactOtion(values.OIOption);

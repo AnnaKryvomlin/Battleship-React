@@ -3,6 +3,7 @@ import { Card, Button } from "semantic-ui-react";
 import { RootStoreContext } from "../../app/stores/rootStore";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
+import { IGameForAccount } from "../../app/models/game";
 
 const ListGames = () => {
   const rootStore = useContext(RootStoreContext);
@@ -15,16 +16,16 @@ const ListGames = () => {
     }
   }
    
-  const handleGoGame = (id: number) =>
+  const handleGoGame = (game: IGameForAccount) =>
   {
-    setGameId(id);
+    setGameId(game);
   };
 
   return (
     <Card.Group>
       {profileGames.map((game) => (
         <Card fluid color="red" key={game.id}>
-          <Card.Content>Game# {game.id} <Button onClick={() => handleGoGame(game.id)} content="GO" color="green" size='mini'/> </Card.Content>
+          <Card.Content>Game# {game.id} <Button onClick={() => handleGoGame(game)} content="GO" color="green" size='mini'/> </Card.Content>
           {CheckMove(game.currentMovePlayerId)}
         </Card>
       ))}

@@ -17,8 +17,6 @@ const Board = () => {
     for (let y = 1; y <= 10; y++) {
       const xLine: JSX.Element[] = [];
       for (let x = 1; x <= 10; x++) {
-        //    const shipForPosition = this.ships.find(s => s.x == x && s.y == y);
-        //   const hasAnotherShip = !!this.ships.find(s => s.x <= x && s.x + s.size > x && s.y == y );
         const cell = renderSquare(x, y);
         xLine.push(cell);
       }
