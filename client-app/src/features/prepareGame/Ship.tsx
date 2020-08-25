@@ -6,7 +6,7 @@ import { IShip } from '../../app/models/ship'
 const shipStyle: React.CSSProperties = {
     cursor: 'move',
     height: 40,
-    background: 'red',
+    background: 'blue',
     border: '2px solid black',
     position: "absolute"
   }

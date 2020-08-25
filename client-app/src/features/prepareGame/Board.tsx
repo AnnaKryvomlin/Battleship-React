@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import BoardSquare from "./BoardSquare";
 import Ship from "./Ship";
 import { RootStoreContext } from "../../app/stores/rootStore";
+import { observer } from "mobx-react-lite";
 
 const boardStyle: React.CSSProperties = {
   width: "400px",
@@ -31,7 +32,6 @@ const Board = () => {
       yLine.push(xLine);
     }
     setMyBoard(yLine);
-    console.log(ships);
   }
 
   function setShip(x: number, y: number) {
@@ -42,9 +42,13 @@ const Board = () => {
   }
 
   function renderSquare(x: number, y: number) {
+    const hasShip =
+      !!ships.find((s) => s.x - 1 <= x && s.x + s.size + 1 > x && s.y == y) ||
+      !!ships.find((s) => s.x <= x && s.x + s.size > x && s.y == y - 1) ||
+      !!ships.find((s) => s.x <= x && s.x + s.size > x && s.y == y + 1);
     return (
       <div key={"x" + x + " y" + y}>
-        <BoardSquare x={x} y={y}>
+        <BoardSquare x={x} y={y} hasShip={hasShip}>
           {setShip(x, y)}
         </BoardSquare>
       </div>
@@ -54,4 +58,4 @@ const Board = () => {
   return <div style={boardStyle}>{board} </div>;
 };
 
-export default Board;
+export default observer(Board);

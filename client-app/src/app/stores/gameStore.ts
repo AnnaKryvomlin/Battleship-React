@@ -52,7 +52,6 @@ export default class GameStore {
     let ship = this.ships.find((s) => s.x === x && s.y === y);
     ship = newShip;
     this.changeShips();
-    console.log( this.shipChange);
   }
 
   @action changeShips = () => {
