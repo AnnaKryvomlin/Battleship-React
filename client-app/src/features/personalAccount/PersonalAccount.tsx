@@ -13,7 +13,7 @@ const PersonalAccount = () => {
     rootStore.gameStore.loadProfileGames();
   }, [rootStore.gameStore]);
 
-  if (rootStore.gameStore.loadingProfile)
+  if (rootStore.gameStore.loadingGames)
     return <LoadingComponent content="Loading your games" />;
 
   return (

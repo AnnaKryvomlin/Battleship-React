@@ -20,7 +20,7 @@ const StatisticFilters = () => {
   } = rootStore.statisticStore;
 
   const handleFinalFormSubmit = (values: any) => {
-    console.log(values);
+//    values.name !== undefined ? values.name : "";
     setName(values.name);
     setFilter(values.filter);
     setOnlyIntactOtion(values.OIOption);
@@ -43,13 +43,13 @@ const StatisticFilters = () => {
             name="filter"
             defaultValue={filterMoveState}
           />
-         <label>Only Intact Ships</label>
+         <label htmlFor = "OIOption">Only Intact Ships</label>
             <Field<boolean>
               name="OIOption"
+              id="OIOption"
               type="checkbox"
               initialValue={onlyIntactShips}
               component={CheckboxInput}
-
             />
             <br/>
           <Button positive content="Filter" />

@@ -18,6 +18,7 @@ import RegisterForm from "../../features/user/RegisterForm";
 import PersonalAccount from "../../features/personalAccount/PersonalAccount";
 import Statistic from "../../features/Statistics/Statistic";
 import PrivateRoute from "./PrivateRoute";
+import Game from "../../features/game/Game";
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   const rootStore = useContext(RootStoreContext);
@@ -46,6 +47,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
             <Route exact path="/register" component={RegisterForm} />
             <PrivateRoute  exact path="/profile/:username" component={PersonalAccount} />
             <PrivateRoute exact path="/statistic" component={Statistic} />
+            <PrivateRoute exact path="/game/:gameId" component={Game} />
             <Route component={NotFound} />
           </Switch>
         </Container>

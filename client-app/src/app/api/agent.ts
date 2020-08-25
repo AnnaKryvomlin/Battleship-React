@@ -3,7 +3,9 @@ import { IUser, IUserFormValues, IUserLoginValues } from "../models/user";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { IGameForAccount } from "../models/game";
-import { IStatistic, IStatisticPaged } from "../models/statistic";
+import { IStatisticPaged } from "../models/statistic";
+import { ICoordinate } from "../models/coordinate";
+import { IRecord } from "../models/record";
 
 axios.defaults.baseURL = "https://localhost:44336/api";
 
@@ -66,11 +68,17 @@ const User = {
 const Game = {
   listProfileGames: (): Promise<IGameForAccount[]> =>
     requests.get("/PersonalAccount"),
+  myCoordsForGame: (id: number): Promise<ICoordinate[]> =>
+    requests.get(`/game/my_coords/${id}`),
+  enemyCoordsForGame: (id: number): Promise<ICoordinate[]> =>
+    requests.get(`/game/enemy_coords/${id}`),
+  recordsForGame: (id: number): Promise<IRecord[]> =>
+    requests.get(`/game/get_records/${id}`),
 };
 
 const Statistic = {
   list: (params: URLSearchParams): Promise<IStatisticPaged> =>
-    axios.get(`/Statistics`, {params: params}).then(responseBody),
+    axios.get(`/Statistics`, { params: params }).then(responseBody),
 };
 
 export default {
