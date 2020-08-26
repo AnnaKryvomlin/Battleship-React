@@ -67,7 +67,7 @@
             {
                 new Claim(ClaimTypes.NameIdentifier, userToVerify.Id.ToString()),
                 new Claim(ClaimTypes.NameIdentifier, userToVerify.UserName),
-                };
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.config.GetSection("AppSettings:Token").Value));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -102,7 +102,7 @@
                {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.UserName),
-                };
+               };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.config.GetSection("AppSettings:Token").Value));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
