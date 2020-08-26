@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
-namespace BattleShip.BusinessLogic.Enums
+﻿namespace BattleShip.BusinessLogic.Enums
 {
+    using System.ComponentModel.DataAnnotations;
+
     public enum FilterMoveState
     {
         [Display(Name = "Все")]
@@ -14,6 +11,6 @@ namespace BattleShip.BusinessLogic.Enums
         [Display(Name = "41-100")]
         Medium,
         [Display(Name = "101+")]
-        Maximum
+        Maximum,
     }
 }

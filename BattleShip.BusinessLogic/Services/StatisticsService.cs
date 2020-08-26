@@ -1,14 +1,13 @@
-﻿using BattleShip.BusinessLogic.Enums;
-using BattleShip.BusinessLogic.Interfaces;
-using BattleShip.DataAccess.Interfaces;
-using BattleShip.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace BattleShip.BusinessLogic.Services
+﻿namespace BattleShip.BusinessLogic.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using BattleShip.BusinessLogic.Enums;
+    using BattleShip.BusinessLogic.Interfaces;
+    using BattleShip.DataAccess.Interfaces;
+    using BattleShip.Models.Entities;
+
     public class StatisticsService : IStatisticsService
     {
         private IUnitOfWork db;
@@ -29,6 +28,7 @@ namespace BattleShip.BusinessLogic.Services
             foreach (var ship in ships)
             {
                 int injuredCells = ship.Coordinates.Where(c => c.Mark).Count();
+
                 // if ship isn't killed add it to winner's ships
                 if (injuredCells != ship.Size)
                 {
@@ -39,6 +39,7 @@ namespace BattleShip.BusinessLogic.Services
                     this.db.WinnerShips.Create(winnerShip);
                 }
             }
+
             this.db.Save();
         }
 
@@ -50,7 +51,7 @@ namespace BattleShip.BusinessLogic.Services
                 statisticsRecords = statisticsRecords.Where(sr => sr.Winner == name);
             }
 
-            if(onlyIntactShips)
+            if (onlyIntactShips)
             {
                 // Find only games where ships don't contain injured cells
                 statisticsRecords = statisticsRecords.Where(sr => sr.WinnerShips.Where(ws => ws.InjuredCells > 0).Count() == 0);
@@ -84,7 +85,7 @@ namespace BattleShip.BusinessLogic.Services
                     statisticsRecords = statisticsRecords.OrderByDescending(sr => sr.MoveCount);
                     break;
                 case SortState.ShipCountAsc:
-                    statisticsRecords = statisticsRecords.OrderBy(sr=>sr.WinnerShips.Count());
+                    statisticsRecords = statisticsRecords.OrderBy(sr => sr.WinnerShips.Count());
                     break;
                 case SortState.ShipCountDesc:
                     statisticsRecords = statisticsRecords.OrderByDescending(sr => sr.WinnerShips.Count());

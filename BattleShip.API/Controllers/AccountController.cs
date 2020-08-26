@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using BattleShip.API.Helpers;
-using BattleShip.BusinessLogic.Interfaces;
-using BattleShip.Models.Entities;
-using BattleShip.WEB.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-
-namespace BattleShip.API.Controllers
+﻿namespace BattleShip.API.Controllers
 {
+    using System;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Security.Claims;
+    using System.Text;
+    using System.Threading.Tasks;
+    using BattleShip.BusinessLogic.Interfaces;
+    using BattleShip.Models.Entities;
+    using BattleShip.WEB.Models;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.IdentityModel.Tokens;
+
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -36,9 +33,9 @@ namespace BattleShip.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.UserName };
@@ -46,11 +43,13 @@ namespace BattleShip.API.Controllers
             var result = await this.userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
-                return BadRequest(result.Errors);
+            {
+                return this.BadRequest(result.Errors);
+            }
 
             this.playerService.CreatePlayer(user);
 
-            return Ok();
+            return this.Ok();
         }
 
         [HttpPost("login")]
@@ -60,35 +59,35 @@ namespace BattleShip.API.Controllers
 
             if (!result.Succeeded)
             {
-                return Unauthorized("Incorrect login or password");
+                return this.Unauthorized("Incorrect login or password");
             }
 
-            var userToVerify = await userManager.FindByNameAsync(model.UserName);
+            var userToVerify = await this.userManager.FindByNameAsync(model.UserName);
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userToVerify.Id.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, userToVerify.UserName)
+                new Claim(ClaimTypes.NameIdentifier, userToVerify.UserName),
                 };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("AppSettings:Token").Value));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.config.GetSection("AppSettings:Token").Value));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(1),
-                SigningCredentials = creds
+                SigningCredentials = creds,
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return Ok(new
+            return this.Ok(new
             {
                 Id = userToVerify.Id,
                 userName = model.UserName,
-                token = tokenHandler.WriteToken(token)
+                token = tokenHandler.WriteToken(token),
             });
         }
 
@@ -98,36 +97,36 @@ namespace BattleShip.API.Controllers
             var id = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (id != null)
             {
-                var user = await userManager.FindByIdAsync(id);
+                var user = await this.userManager.FindByIdAsync(id);
                 var claims = new[]
                {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.UserName)
+                new Claim(ClaimTypes.NameIdentifier, user.UserName),
                 };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("AppSettings:Token").Value));
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.config.GetSection("AppSettings:Token").Value));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(claims),
                     Expires = DateTime.Now.AddDays(1),
-                    SigningCredentials = creds
+                    SigningCredentials = creds,
                 };
 
                 var tokenHandler = new JwtSecurityTokenHandler();
 
                 var token = tokenHandler.CreateToken(tokenDescriptor);
 
-                return Ok(new
+                return this.Ok(new
                 {
                     Id = Convert.ToInt32(id),
                     userName = user.UserName,
-                    token = tokenHandler.WriteToken(token)
+                    token = tokenHandler.WriteToken(token),
                 });
             }
-            return Unauthorized();
 
+            return this.Unauthorized();
         }
     }
 }

@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BattleShip.Models.Entities
+﻿namespace BattleShip.Models.Entities
 {
+    using Microsoft.AspNetCore.Identity;
+
     public class ApplicationRole : IdentityRole<int>
     {
     }

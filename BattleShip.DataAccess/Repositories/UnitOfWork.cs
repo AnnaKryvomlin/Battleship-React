@@ -1,15 +1,11 @@
-﻿using BattleShip.DataAccess.EF;
-using BattleShip.Models.Entities;
-using BattleShip.DataAccess.Interfaces;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BattleShip.DataAccess.Repositories
+﻿namespace BattleShip.DataAccess.Repositories
 {
+    using System;
+    using BattleShip.DataAccess.EF;
+    using BattleShip.DataAccess.Interfaces;
+    using BattleShip.Models.Entities;
+    using Microsoft.EntityFrameworkCore;
+
     public class UnitOfWork : IUnitOfWork
     {
         private ApplicationDbContext db;
@@ -33,7 +29,10 @@ namespace BattleShip.DataAccess.Repositories
             get
             {
                 if (this.statisticRecordRepository == null)
-                    this.statisticRecordRepository = new StatisticRecordRepository(db);
+                {
+                    this.statisticRecordRepository = new StatisticRecordRepository(this.db);
+                }
+
                 return this.statisticRecordRepository;
             }
         }
@@ -43,7 +42,10 @@ namespace BattleShip.DataAccess.Repositories
             get
             {
                 if (this.winnerShipRepository == null)
-                    this.winnerShipRepository = new WinnerShipRepository(db);
+                {
+                    this.winnerShipRepository = new WinnerShipRepository(this.db);
+                }
+
                 return this.winnerShipRepository;
             }
         }
@@ -53,7 +55,10 @@ namespace BattleShip.DataAccess.Repositories
             get
             {
                 if (this.coordinateRepository == null)
-                    this.coordinateRepository = new CoordinateRepository(db);
+                {
+                    this.coordinateRepository = new CoordinateRepository(this.db);
+                }
+
                 return this.coordinateRepository;
             }
         }
@@ -63,7 +68,10 @@ namespace BattleShip.DataAccess.Repositories
             get
             {
                 if (this.fieldRepository == null)
-                    this.fieldRepository = new FieldRepository(db);
+                {
+                    this.fieldRepository = new FieldRepository(this.db);
+                }
+
                 return this.fieldRepository;
             }
         }
@@ -73,7 +81,10 @@ namespace BattleShip.DataAccess.Repositories
             get
             {
                 if (this.gameRepository == null)
-                    this.gameRepository = new GameRepository(db);
+                {
+                    this.gameRepository = new GameRepository(this.db);
+                }
+
                 return this.gameRepository;
             }
         }
@@ -83,7 +94,10 @@ namespace BattleShip.DataAccess.Repositories
             get
             {
                 if (this.moveRepository == null)
-                    this.moveRepository = new MoveRepository(db);
+                {
+                    this.moveRepository = new MoveRepository(this.db);
+                }
+
                 return this.moveRepository;
             }
         }
@@ -93,39 +107,48 @@ namespace BattleShip.DataAccess.Repositories
             get
             {
                 if (this.playerGameRepository == null)
-                    this.playerGameRepository = new PlayerGameRepository(db);
+                {
+                    this.playerGameRepository = new PlayerGameRepository(this.db);
+                }
+
                 return this.playerGameRepository;
             }
         }
 
-        public IRepository<Player> Players 
+        public IRepository<Player> Players
         {
             get
             {
                 if (this.playerRepository == null)
-                    this.playerRepository = new PlayerRepository(db);
+                {
+                    this.playerRepository = new PlayerRepository(this.db);
+                }
+
                 return this.playerRepository;
             }
         }
-        
+
         public IRepository<Ship> Ships
         {
             get
             {
                 if (this.shipRepository == null)
-                    this.shipRepository = new ShipRepository(db);
+                {
+                    this.shipRepository = new ShipRepository(this.db);
+                }
+
                 return this.shipRepository;
             }
         }
 
         public void Save()
         {
-            db.SaveChanges();
+            this.db.SaveChanges();
         }
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -139,6 +162,7 @@ namespace BattleShip.DataAccess.Repositories
                 {
                     this.db.Dispose();
                 }
+
                 this.disposed = true;
             }
         }

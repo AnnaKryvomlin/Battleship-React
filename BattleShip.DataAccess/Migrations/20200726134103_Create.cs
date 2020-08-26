@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace BattleShip.DataAccess.Migrations
+﻿namespace BattleShip.DataAccess.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class Create : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace BattleShip.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true)
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -41,7 +41,7 @@ namespace BattleShip.DataAccess.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -55,7 +55,7 @@ namespace BattleShip.DataAccess.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<string>(nullable: true),
-                    CurrentMovePlayerId = table.Column<int>(nullable: false)
+                    CurrentMovePlayerId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -69,7 +69,7 @@ namespace BattleShip.DataAccess.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Winner = table.Column<string>(nullable: true),
-                    MoveCount = table.Column<int>(nullable: false)
+                    MoveCount = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -84,7 +84,7 @@ namespace BattleShip.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
+                    ClaimValue = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -105,7 +105,7 @@ namespace BattleShip.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
+                    ClaimValue = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -125,7 +125,7 @@ namespace BattleShip.DataAccess.Migrations
                     LoginProvider = table.Column<string>(nullable: false),
                     ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -143,7 +143,7 @@ namespace BattleShip.DataAccess.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false)
+                    RoleId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -169,7 +169,7 @@ namespace BattleShip.DataAccess.Migrations
                     UserId = table.Column<int>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    Value = table.Column<string>(nullable: true)
+                    Value = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -187,7 +187,7 @@ namespace BattleShip.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    UserName = table.Column<string>(nullable: true)
+                    UserName = table.Column<string>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -207,7 +207,7 @@ namespace BattleShip.DataAccess.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PlayerMove = table.Column<string>(nullable: true),
-                    GameId = table.Column<int>(nullable: false)
+                    GameId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -228,7 +228,7 @@ namespace BattleShip.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     InjuredCells = table.Column<int>(nullable: true),
                     Size = table.Column<int>(nullable: false),
-                    StatisticsRecordId = table.Column<int>(nullable: false)
+                    StatisticsRecordId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -248,7 +248,7 @@ namespace BattleShip.DataAccess.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GameId = table.Column<int>(nullable: true),
-                    PlayerId = table.Column<int>(nullable: false)
+                    PlayerId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -272,7 +272,7 @@ namespace BattleShip.DataAccess.Migrations
                 columns: table => new
                 {
                     PlayerId = table.Column<int>(nullable: false),
-                    GameId = table.Column<int>(nullable: false)
+                    GameId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -298,7 +298,7 @@ namespace BattleShip.DataAccess.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Size = table.Column<int>(nullable: false),
-                    FieldId = table.Column<int>(nullable: true)
+                    FieldId = table.Column<int>(nullable: true),
                 },
                 constraints: table =>
                 {
@@ -321,7 +321,7 @@ namespace BattleShip.DataAccess.Migrations
                     Y = table.Column<int>(nullable: false),
                     Mark = table.Column<bool>(nullable: false),
                     FieldId = table.Column<int>(nullable: false),
-                    ShipId = table.Column<int>(nullable: true)
+                    ShipId = table.Column<int>(nullable: true),
                 },
                 constraints: table =>
                 {

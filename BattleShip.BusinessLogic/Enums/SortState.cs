@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BattleShip.BusinessLogic.Enums
+﻿namespace BattleShip.BusinessLogic.Enums
 {
     public enum SortState
     {
-        NameAsc,   
+        NameAsc,
         NameDesc,
         MoveCountAsc,
         MoveCountDesc,
         ShipCountAsc,
-        ShipCountDesc
+        ShipCountDesc,
     }
 }

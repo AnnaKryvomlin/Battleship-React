@@ -1,13 +1,12 @@
-﻿using BattleShip.DataAccess.EF;
-using BattleShip.DataAccess.Interfaces;
-using BattleShip.Models.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BattleShip.DataAccess.Repositories
+﻿namespace BattleShip.DataAccess.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using BattleShip.DataAccess.EF;
+    using BattleShip.DataAccess.Interfaces;
+    using BattleShip.Models.Entities;
+    using Microsoft.EntityFrameworkCore;
+
     public class ShipRepository : IRepository<Ship>
     {
         private ApplicationDbContext db;
@@ -26,14 +25,17 @@ namespace BattleShip.DataAccess.Repositories
         {
             Ship item = this.db.Ships.Find(id);
             if (item == null)
+            {
                 throw new Exception("Item with this Id doesn't exist");
+            }
+
             this.db.Ships.Remove(item);
         }
 
         public Ship Get(int id)
         {
             Ship ship = this.db.Ships.Find(id);
-            db.Entry(ship).Collection(s => s.Coordinates).Load();
+            this.db.Entry(ship).Collection(s => s.Coordinates).Load();
             return ship;
         }
 

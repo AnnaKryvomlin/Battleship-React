@@ -1,13 +1,12 @@
-﻿using BattleShip.DataAccess.EF;
-using BattleShip.DataAccess.Interfaces;
-using BattleShip.Models.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BattleShip.DataAccess.Repositories
+﻿namespace BattleShip.DataAccess.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using BattleShip.DataAccess.EF;
+    using BattleShip.DataAccess.Interfaces;
+    using BattleShip.Models.Entities;
+    using Microsoft.EntityFrameworkCore;
+
     public class WinnerShipRepository : IRepository<WinnerShip>
     {
         private ApplicationDbContext db;
@@ -26,7 +25,10 @@ namespace BattleShip.DataAccess.Repositories
         {
             WinnerShip item = this.db.WinnerShips.Find(id);
             if (item == null)
+            {
                 throw new Exception("Item with this Id doesn't exist");
+            }
+
             this.db.WinnerShips.Remove(item);
         }
 

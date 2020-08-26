@@ -1,14 +1,9 @@
-﻿using BattleShip.BusinessLogic.Interfaces;
-using BattleShip.Models.Entities;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BattleShip.WEB.Hubs
+﻿namespace BattleShip.WEB.Hubs
 {
+    using System.Threading.Tasks;
+    using BattleShip.BusinessLogic.Interfaces;
+    using Microsoft.AspNetCore.SignalR;
+
     public class GameHub : Hub
     {
         private IGameService gameService;
@@ -20,7 +15,7 @@ namespace BattleShip.WEB.Hubs
 
         public Task JoinGame(int gameId)
         {
-            return Groups.AddToGroupAsync(Context.ConnectionId, gameId.ToString());
+            return this.Groups.AddToGroupAsync(this.Context.ConnectionId, gameId.ToString());
         }
 
         public void TakeAShot(int playerId, int gameId, int x, int y)
@@ -30,29 +25,28 @@ namespace BattleShip.WEB.Hubs
             if (this.gameService.IsGameCanContinues(gameId, playerId))
             {
                 string record = this.gameService.MoveRecord(playerId, gameId, x, y);
-                Clients.Caller.SendAsync("TakeAShot", coordinate.ShipId != null, x, y, currentPlayerId);
-                Clients.OthersInGroup(gameId.ToString()).SendAsync("ShowAShot", x, y, currentPlayerId);
-                Clients.Group(gameId.ToString()).SendAsync("NewRecord", record);
+                this.Clients.Caller.SendAsync("TakeAShot", coordinate.ShipId != null, x, y, currentPlayerId);
+                this.Clients.OthersInGroup(gameId.ToString()).SendAsync("ShowAShot", x, y, currentPlayerId);
+                this.Clients.Group(gameId.ToString()).SendAsync("NewRecord", record);
             }
-
             else
             {
-                Clients.Caller.SendAsync("TakeAShot", coordinate.ShipId != null, x, y, currentPlayerId);
-                Clients.OthersInGroup(gameId.ToString()).SendAsync("ShowAShot", x, y, currentPlayerId);
+                this.Clients.Caller.SendAsync("TakeAShot", coordinate.ShipId != null, x, y, currentPlayerId);
+                this.Clients.OthersInGroup(gameId.ToString()).SendAsync("ShowAShot", x, y, currentPlayerId);
                 string message = "Вы выиграли!";
-                Clients.Caller.SendAsync("Finished", message);
+                this.Clients.Caller.SendAsync("Finished", message);
                 string mess = "Победа не главное!";
-                Clients.OthersInGroup(gameId.ToString()).SendAsync("Finished", mess);
+                this.Clients.OthersInGroup(gameId.ToString()).SendAsync("Finished", mess);
             }
         }
-        
+
         public void TrowUpTheTowel(int playerId, int gameId)
         {
             this.gameService.TrowUpTheTowel(gameId, playerId);
             string message = "Иногда нужно вовремя сдаться...";
-            Clients.Caller.SendAsync("StopGame", message);
+            this.Clients.Caller.SendAsync("StopGame", message);
             string mess = "Вы выиграли!";
-            Clients.OthersInGroup(gameId.ToString()).SendAsync("StopGame", mess);
+            this.Clients.OthersInGroup(gameId.ToString()).SendAsync("StopGame", mess);
         }
     }
 }

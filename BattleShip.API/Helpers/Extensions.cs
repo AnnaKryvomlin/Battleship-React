@@ -1,14 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-
-namespace BattleShip.API.Helpers
+﻿namespace BattleShip.API.Helpers
 {
+    using Microsoft.AspNetCore.Http;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
+
     public static class Extensions
     {
         public static void AddAplicationError(this HttpResponse response, string message)

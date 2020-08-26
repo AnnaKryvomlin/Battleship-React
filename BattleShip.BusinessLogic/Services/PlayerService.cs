@@ -1,12 +1,9 @@
-﻿using BattleShip.BusinessLogic.Interfaces;
-using BattleShip.DataAccess.Interfaces;
-using BattleShip.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BattleShip.BusinessLogic.Services
+﻿namespace BattleShip.BusinessLogic.Services
 {
+    using BattleShip.BusinessLogic.Interfaces;
+    using BattleShip.DataAccess.Interfaces;
+    using BattleShip.Models.Entities;
+
     public class PlayerService : IPlayerService
     {
         private IUnitOfWork db;

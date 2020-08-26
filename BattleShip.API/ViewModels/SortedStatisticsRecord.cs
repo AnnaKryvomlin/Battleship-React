@@ -1,16 +1,15 @@
-﻿using BattleShip.BusinessLogic.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BattleShip.API.ViewModels
+﻿namespace BattleShip.API.ViewModels
 {
+    using BattleShip.BusinessLogic.Enums;
+
     public class SortedStatisticsRecord
     {
         public SortState NameSort { get; private set; }
+
         public SortState MoveCountSort { get; private set; }
+
         public SortState ShipCountSort { get; private set; }
+
         public SortState Current { get; private set; }
 
         public SortedStatisticsRecord(SortState sortOrder)

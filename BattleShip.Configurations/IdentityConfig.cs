@@ -1,10 +1,10 @@
-﻿using BattleShip.DataAccess.EF;
-using BattleShip.Models.Entities;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace BattleShip.Configurations
+﻿namespace BattleShip.Configurations
 {
+    using BattleShip.DataAccess.EF;
+    using BattleShip.Models.Entities;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.Extensions.DependencyInjection;
+
     public static class IdentityConfig
     {
         public static void ConfigureIdentity(this IServiceCollection services)

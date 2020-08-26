@@ -1,12 +1,9 @@
-﻿using BattleShip.BusinessLogic.Interfaces;
-using BattleShip.BusinessLogic.Services;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BattleShip.Configurations
+﻿namespace BattleShip.Configurations
 {
+    using BattleShip.BusinessLogic.Interfaces;
+    using BattleShip.BusinessLogic.Services;
+    using Microsoft.Extensions.DependencyInjection;
+
     public static class ServiceConfig
     {
         public static void ConfigureServices(this IServiceCollection services)

@@ -1,20 +1,27 @@
-﻿using BattleShip.Models.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-
-
-namespace BattleShip.DataAccess.EF
+﻿namespace BattleShip.DataAccess.EF
 {
+    using BattleShip.Models.Entities;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore;
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
     {
         public DbSet<Player> Players { get; set; }
+
         public DbSet<Game> Games { get; set; }
+
         public DbSet<PlayerGame> PlayerGames { get; set; }
+
         public DbSet<Move> Moves { get; set; }
+
         public DbSet<Field> Fields { get; set; }
+
         public DbSet<Ship> Ships { get; set; }
+
         public DbSet<Coordinate> Coordinates { get; set; }
+
         public DbSet<WinnerShip> WinnerShips { get; set; }
+
         public DbSet<StatisticsRecord> StatisticsRecords { get; set; }
 
         public ApplicationDbContext(DbContextOptions options)
