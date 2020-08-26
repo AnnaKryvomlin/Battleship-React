@@ -1,14 +1,14 @@
-﻿namespace BattleShip.DataAccess.Repositories
-{
-    using System;
-    using BattleShip.DataAccess.EF;
-    using BattleShip.DataAccess.Interfaces;
-    using BattleShip.Models.Entities;
-    using Microsoft.EntityFrameworkCore;
+﻿using System;
+using BattleShip.DataAccess.EF;
+using BattleShip.DataAccess.Interfaces;
+using BattleShip.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
+namespace BattleShip.DataAccess.Repositories
+{
     public class UnitOfWork : IUnitOfWork
     {
-        private ApplicationDbContext db;
+        private readonly ApplicationDbContext db;
         private CoordinateRepository coordinateRepository;
         private FieldRepository fieldRepository;
         private GameRepository gameRepository;

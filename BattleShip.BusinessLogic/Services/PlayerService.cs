@@ -1,12 +1,12 @@
-﻿namespace BattleShip.BusinessLogic.Services
-{
-    using BattleShip.BusinessLogic.Interfaces;
-    using BattleShip.DataAccess.Interfaces;
-    using BattleShip.Models.Entities;
+﻿using BattleShip.BusinessLogic.Interfaces;
+using BattleShip.DataAccess.Interfaces;
+using BattleShip.Models.Entities;
 
+namespace BattleShip.BusinessLogic.Services
+{
     public class PlayerService : IPlayerService
     {
-        private IUnitOfWork db;
+        private readonly IUnitOfWork db;
 
         public PlayerService(IUnitOfWork uow)
         {
@@ -15,9 +15,11 @@
 
         public void CreatePlayer(ApplicationUser user)
         {
-            Player player = new Player();
-            player.Id = user.Id;
-            player.UserName = user.UserName;
+            Player player = new Player
+            {
+                Id = user.Id,
+                UserName = user.UserName
+            };
             this.db.Players.Create(player);
             this.db.Save();
         }

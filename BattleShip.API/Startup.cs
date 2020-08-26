@@ -1,23 +1,23 @@
-﻿namespace BattleShip.API
-{
-    using System;
-    using System.Net;
-    using System.Text;
-    using System.Threading.Tasks;
-    using BattleShip.API.Helpers;
-    using BattleShip.Configurations;
-    using BattleShip.WEB.Hubs;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Diagnostics;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using Microsoft.IdentityModel.Tokens;
+﻿using System;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using BattleShip.API.Helpers;
+using BattleShip.Configurations;
+using BattleShip.WEB.Hubs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
+namespace BattleShip.API
+{
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -36,12 +36,10 @@
             services.ConfigureServices();
             services.AddControllers();
             services.AddCors(options => options.AddPolicy("Cors", builder =>
-                builder.
-                AllowAnyOrigin().
+                builder.AllowAnyOrigin().
                 AllowAnyHeader().
                 AllowAnyMethod()));
             services.AddSignalR();
-
             services.AddAuthorization(options =>
             {
                 options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
@@ -86,7 +84,7 @@
         {
             if (env.IsDevelopment())
             {
-                //   app.UseDeveloperExceptionPage();
+                // app.UseDeveloperExceptionPage();
 
                 app.UseExceptionHandler(builder =>
                 {

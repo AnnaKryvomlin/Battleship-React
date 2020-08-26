@@ -1,7 +1,7 @@
-﻿namespace BattleShip.Models.Entities
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace BattleShip.Models.Entities
+{
     public class StatisticsRecord
     {
         public int Id { get; set; }

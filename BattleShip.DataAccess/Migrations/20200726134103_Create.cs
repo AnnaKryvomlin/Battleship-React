@@ -1,11 +1,13 @@
-﻿namespace BattleShip.DataAccess.Migrations
-{
-    using System;
-    using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
+namespace BattleShip.DataAccess.Migrations
+{
     public partial class Create : Migration
     {
+#pragma warning disable Nix02 // Method is too long
         protected override void Up(MigrationBuilder migrationBuilder)
+#pragma warning restore Nix02 // Method is too long
         {
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",

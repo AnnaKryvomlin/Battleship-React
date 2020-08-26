@@ -1,7 +1,7 @@
-﻿namespace BattleShip.WEB.Models
-{
-    using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace BattleShip.WEB.Models
+{
     public class RegisterViewModel
     {
         [Required]

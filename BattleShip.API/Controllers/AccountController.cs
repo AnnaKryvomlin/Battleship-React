@@ -1,18 +1,18 @@
-﻿namespace BattleShip.API.Controllers
-{
-    using System;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Security.Claims;
-    using System.Text;
-    using System.Threading.Tasks;
-    using BattleShip.BusinessLogic.Interfaces;
-    using BattleShip.Models.Entities;
-    using BattleShip.WEB.Models;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.IdentityModel.Tokens;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using BattleShip.BusinessLogic.Interfaces;
+using BattleShip.Models.Entities;
+using BattleShip.WEB.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
+namespace BattleShip.API.Controllers
+{
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -85,7 +85,7 @@
 
             return this.Ok(new
             {
-                Id = userToVerify.Id,
+                userToVerify.Id,
                 userName = model.UserName,
                 token = tokenHandler.WriteToken(token),
             });

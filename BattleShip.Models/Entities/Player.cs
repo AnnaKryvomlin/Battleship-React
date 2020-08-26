@@ -1,9 +1,9 @@
-﻿namespace BattleShip.Models.Entities
-{
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
+namespace BattleShip.Models.Entities
+{
     public class Player
     {
         [Key]

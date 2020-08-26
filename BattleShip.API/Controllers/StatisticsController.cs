@@ -1,22 +1,22 @@
-﻿namespace BattleShip.API.Controllers
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using AutoMapper;
-    using BattleShip.API.Helpers;
-    using BattleShip.API.ViewModels;
-    using BattleShip.BusinessLogic.Enums;
-    using BattleShip.BusinessLogic.Interfaces;
-    using BattleShip.Models.Entities;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
+using BattleShip.API.Helpers;
+using BattleShip.API.ViewModels;
+using BattleShip.BusinessLogic.Enums;
+using BattleShip.BusinessLogic.Interfaces;
+using BattleShip.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
+namespace BattleShip.API.Controllers
+{
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class StatisticsController : ControllerBase
     {
-        private IStatisticsService statisticsService;
+        private readonly IStatisticsService statisticsService;
 
         public StatisticsController(IStatisticsService statisticsService)
         {

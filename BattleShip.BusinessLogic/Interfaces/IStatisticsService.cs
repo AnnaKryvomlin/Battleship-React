@@ -1,9 +1,9 @@
-﻿namespace BattleShip.BusinessLogic.Interfaces
-{
-    using System.Collections.Generic;
-    using BattleShip.BusinessLogic.Enums;
-    using BattleShip.Models.Entities;
+﻿using System.Collections.Generic;
+using BattleShip.BusinessLogic.Enums;
+using BattleShip.Models.Entities;
 
+namespace BattleShip.BusinessLogic.Interfaces
+{
     public interface IStatisticsService
     {
         void AddFinishedGame(int gameId, int playerId);

@@ -1,7 +1,7 @@
-﻿namespace BattleShip.DataAccess.Interfaces
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace BattleShip.DataAccess.Interfaces
+{
     public interface IRepository<T>
             where T : class
     {

@@ -1,16 +1,15 @@
-﻿namespace BattleShip.BusinessLogic.Services
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using BattleShip.BusinessLogic.Enums;
-    using BattleShip.BusinessLogic.Interfaces;
-    using BattleShip.DataAccess.Interfaces;
-    using BattleShip.Models.Entities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using BattleShip.BusinessLogic.Enums;
+using BattleShip.BusinessLogic.Interfaces;
+using BattleShip.DataAccess.Interfaces;
+using BattleShip.Models.Entities;
 
+namespace BattleShip.BusinessLogic.Services
+{
     public class StatisticsService : IStatisticsService
     {
-        private IUnitOfWork db;
+        private readonly IUnitOfWork db;
 
         public StatisticsService(IUnitOfWork uow)
         {
@@ -19,9 +18,11 @@
 
         public void AddFinishedGame(int gameId, int playerId)
         {
-            StatisticsRecord record = new StatisticsRecord();
-            record.Winner = this.db.Players.Get(playerId).UserName;
-            record.MoveCount = this.db.Moves.GetAll().Where(m => m.GameId == gameId).Count();
+            StatisticsRecord record = new StatisticsRecord
+            {
+                Winner = this.db.Players.Get(playerId).UserName,
+                MoveCount = this.db.Moves.GetAll().Where(m => m.GameId == gameId).Count()
+            };
             this.db.StatisticsRecords.Create(record);
             this.db.Save();
             var ships = this.db.Ships.GetAll().Where(s => s.Field.GameId == gameId && s.Field.PlayerId == playerId).ToList();
@@ -32,10 +33,12 @@
                 // if ship isn't killed add it to winner's ships
                 if (injuredCells != ship.Size)
                 {
-                    WinnerShip winnerShip = new WinnerShip();
-                    winnerShip.Size = ship.Size;
-                    winnerShip.InjuredCells = injuredCells;
-                    winnerShip.StatisticsRecordId = record.Id;
+                    WinnerShip winnerShip = new WinnerShip
+                    {
+                        Size = ship.Size,
+                        InjuredCells = injuredCells,
+                        StatisticsRecordId = record.Id
+                    };
                     this.db.WinnerShips.Create(winnerShip);
                 }
             }
@@ -46,14 +49,13 @@
         public List<StatisticsRecord> GetStatisticsRecords(string name, bool onlyIntactShips, SortState sortOrder, FilterMoveState filterMoveState)
         {
             var statisticsRecords = this.db.StatisticsRecords.GetAll();
-            if (!String.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(name))
             {
                 statisticsRecords = statisticsRecords.Where(sr => sr.Winner == name);
             }
 
             if (onlyIntactShips)
             {
-                // Find only games where ships don't contain injured cells
                 statisticsRecords = statisticsRecords.Where(sr => sr.WinnerShips.Where(ws => ws.InjuredCells > 0).Count() == 0);
             }
 

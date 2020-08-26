@@ -1,9 +1,9 @@
-﻿namespace BattleShip.DataAccess.EF
-{
-    using BattleShip.Models.Entities;
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore;
+﻿using BattleShip.Models.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
+namespace BattleShip.DataAccess.EF
+{
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
     {
         public DbSet<Player> Players { get; set; }

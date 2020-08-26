@@ -1,7 +1,7 @@
-﻿namespace BattleShip.API.ViewModels
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace BattleShip.API.ViewModels
+{
     public class StatisticView
     {
         public string Winner { get; set; }

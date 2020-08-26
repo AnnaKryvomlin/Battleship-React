@@ -1,8 +1,8 @@
-﻿namespace BattleShip.DataAccess.Interfaces
-{
-    using System;
-    using BattleShip.Models.Entities;
+﻿using System;
+using BattleShip.Models.Entities;
 
+namespace BattleShip.DataAccess.Interfaces
+{
     public interface IUnitOfWork : IDisposable
     {
         IRepository<Coordinate> Coordinates { get; }

@@ -1,7 +1,7 @@
-﻿namespace BattleShip.BusinessLogic.Enums
-{
-    using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace BattleShip.BusinessLogic.Enums
+{
     public enum FilterMoveState
     {
         [Display(Name = "Все")]

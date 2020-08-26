@@ -1,16 +1,16 @@
-﻿namespace BattleShip.BusinessLogic.Services
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using BattleShip.BusinessLogic.Interfaces;
-    using BattleShip.DataAccess.Interfaces;
-    using BattleShip.Models.Entities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using BattleShip.BusinessLogic.Interfaces;
+using BattleShip.DataAccess.Interfaces;
+using BattleShip.Models.Entities;
 
+namespace BattleShip.BusinessLogic.Services
+{
     public class GameService : IGameService
     {
         private readonly IStatisticsService statisticsService;
 
-        private IUnitOfWork db;
+        private readonly IUnitOfWork db;
 
         public GameService(IUnitOfWork uow, IStatisticsService statisticsService)
         {
@@ -20,8 +20,10 @@
 
         public int CreateGame(int playerId)
         {
-            Game game = new Game();
-            game.CurrentMovePlayerId = playerId;
+            Game game = new Game
+            {
+                CurrentMovePlayerId = playerId
+            };
 
             // Check if someone wait a game. If yes - add field and player to the game.
             var field = this.db.Fields.GetAll().Where(f => f.GameId == null).FirstOrDefault();
@@ -47,8 +49,10 @@
 
         public int CreateField(int playerId, int? gameId)
         {
-            Field field = new Field();
-            field.PlayerId = playerId;
+            Field field = new Field
+            {
+                PlayerId = playerId
+            };
             if (gameId == null)
             {
                 var playerGame = this.db.PlayerGames.GetAll().Where(pg => pg.PlayerId != playerId && this.db.Games.Get(pg.GameId).Status == "Search").FirstOrDefault();
@@ -77,9 +81,11 @@
         {
             foreach (var s in ships)
             {
-                Ship ship = new Ship();
-                ship.Size = s.Coordinates.Count();
-                ship.FieldId = fieldId;
+                Ship ship = new Ship
+                {
+                    Size = s.Coordinates.Count(),
+                    FieldId = fieldId
+                };
                 this.db.Ships.Create(ship);
                 this.db.Save();
                 foreach (var c in s.Coordinates)
@@ -96,7 +102,6 @@
         // For private account
         public List<Game> GetPlayerGames(int playerId)
         {
-            var player = this.db.Players.Get(playerId);
             var playerGames = this.db.PlayerGames.GetAll().Where(pg => pg.PlayerId == playerId).ToList();
             List<Game> games = new List<Game>();
             foreach (var pg in playerGames)
@@ -125,7 +130,6 @@
         // Get coordinate of enemy field for move
         public Coordinate GetCoordinate(int playerId, int gameId, int x, int y)
         {
-            var game = this.GetGame(gameId);
             var coordinate = this.db.Coordinates.GetAll()
                 .Where(coord => coord.Field.GameId == gameId && coord.Field.PlayerId != playerId && coord.X == x && coord.Y == y).FirstOrDefault();
             return coordinate;
@@ -241,10 +245,12 @@
             {
                 for (int y = 1; y <= 10; y++)
                 {
-                    var coordinate = new Coordinate();
-                    coordinate.X = x;
-                    coordinate.Y = y;
-                    coordinate.FieldId = fieldId;
+                    var coordinate = new Coordinate
+                    {
+                        X = x,
+                        Y = y,
+                        FieldId = fieldId
+                    };
                     this.db.Coordinates.Create(coordinate);
                 }
             }

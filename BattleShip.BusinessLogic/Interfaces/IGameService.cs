@@ -1,8 +1,8 @@
-﻿namespace BattleShip.BusinessLogic.Interfaces
-{
-    using System.Collections.Generic;
-    using BattleShip.Models.Entities;
+﻿using System.Collections.Generic;
+using BattleShip.Models.Entities;
 
+namespace BattleShip.BusinessLogic.Interfaces
+{
     public interface IGameService
     {
         int CreateGame(int playerId);

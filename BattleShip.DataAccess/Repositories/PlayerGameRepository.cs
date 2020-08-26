@@ -1,15 +1,15 @@
-﻿namespace BattleShip.DataAccess.Repositories
-{
-    using System;
-    using System.Collections.Generic;
-    using BattleShip.DataAccess.EF;
-    using BattleShip.DataAccess.Interfaces;
-    using BattleShip.Models.Entities;
-    using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using BattleShip.DataAccess.EF;
+using BattleShip.DataAccess.Interfaces;
+using BattleShip.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
+namespace BattleShip.DataAccess.Repositories
+{
     public class PlayerGameRepository : IRepository<PlayerGame>
     {
-        private ApplicationDbContext db;
+        private readonly ApplicationDbContext db;
 
         public PlayerGameRepository(ApplicationDbContext context)
         {

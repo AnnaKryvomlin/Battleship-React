@@ -1,9 +1,9 @@
-﻿namespace BattleShip.API.Helpers
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
+namespace BattleShip.API.Helpers
+{
     public class PagedList<T> : List<T>
     {
         public int CurrentPage { get; set; }

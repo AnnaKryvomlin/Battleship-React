@@ -1,8 +1,8 @@
-﻿namespace BattleShip.API.Helpers
-{
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
+namespace BattleShip.API.Helpers
+{
     public class Errors
     {
         public static ModelStateDictionary AddErrorsToModelState(IdentityResult identityResult, ModelStateDictionary modelState)

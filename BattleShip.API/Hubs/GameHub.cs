@@ -1,12 +1,12 @@
-﻿namespace BattleShip.WEB.Hubs
-{
-    using System.Threading.Tasks;
-    using BattleShip.BusinessLogic.Interfaces;
-    using Microsoft.AspNetCore.SignalR;
+﻿using System.Threading.Tasks;
+using BattleShip.BusinessLogic.Interfaces;
+using Microsoft.AspNetCore.SignalR;
 
+namespace BattleShip.WEB.Hubs
+{
     public class GameHub : Hub
     {
-        private IGameService gameService;
+        private readonly IGameService gameService;
 
         public GameHub(IGameService gameService)
         {

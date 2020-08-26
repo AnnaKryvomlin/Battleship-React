@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+	  <CodeAnalysisRuleSet>../StyleCop/Nix.StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,10 +10,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.7.1" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Nix.StyleCop.Analyzers" Version="1.0.19" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
   </ItemGroup>
 
@@ -22,5 +20,8 @@
     <ProjectReference Include="..\BattleShip.Models\BattleShip.Models.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<AdditionalFiles Include="../StyleCop/stylecop.json" />
+	</ItemGroup>
 
 </Project>

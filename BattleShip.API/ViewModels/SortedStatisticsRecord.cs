@@ -1,7 +1,7 @@
-﻿namespace BattleShip.API.ViewModels
-{
-    using BattleShip.BusinessLogic.Enums;
+﻿using BattleShip.BusinessLogic.Enums;
 
+namespace BattleShip.API.ViewModels
+{
     public class SortedStatisticsRecord
     {
         public SortState NameSort { get; private set; }

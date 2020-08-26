@@ -1,21 +1,21 @@
-﻿namespace BattleShip.API.Controllers
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Security.Claims;
-    using AutoMapper;
-    using BattleShip.API.ViewModels;
-    using BattleShip.BusinessLogic.Interfaces;
-    using BattleShip.Models.Entities;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using AutoMapper;
+using BattleShip.API.ViewModels;
+using BattleShip.BusinessLogic.Interfaces;
+using BattleShip.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
+namespace BattleShip.API.Controllers
+{
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class GameController : ControllerBase
     {
-        private IGameService gameService;
+        private readonly IGameService gameService;
 
         public GameController(IGameService service)
         {
