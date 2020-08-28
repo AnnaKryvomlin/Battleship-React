@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using BattleShip.API.Helpers;
 using BattleShip.Configurations;
 using BattleShip.WEB.Hubs;
@@ -28,12 +29,21 @@ namespace BattleShip.API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+#pragma warning disable Nix02 // Method is too long
         public void ConfigureServices(IServiceCollection services)
+#pragma warning restore Nix02 // Method is too long
         {
             services.ConfigureDbContext(this.Configuration);
             services.ConfigureIdentity();
             services.ConfigureUnitOfWork();
             services.ConfigureServices();
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
             services.AddControllers();
             services.AddCors(options => options.AddPolicy("Cors", builder =>
                 builder.AllowAnyOrigin().

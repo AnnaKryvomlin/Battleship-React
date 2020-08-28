@@ -10,72 +10,46 @@ const boardStyle: React.CSSProperties = {
   flexWrap: "wrap",
 };
 
-const boxStyle: React.CSSProperties = {
-  width: 40,
-  height: 40,
-  border: "1px solid black",
-  position: "relative",
-};
-
 const MyBoard = () => {
   const rootStore = useContext(RootStoreContext);
-  const { myCoords, myLoadFlag, myMove } = rootStore.gameStore;
-
-  const [board, setThisBoard] = useState(Array<Array<JSX.Element>>([]));
-
-  useEffect(() => {
-    if (myLoadFlag) {
-      setBoard();
-    }
-  }, [myMove, myLoadFlag]);
+  const { myCoords } = rootStore.gameStore;
 
   if (rootStore.gameStore.loadingGames)
     return <LoadingComponent content="Loading your field" />;
 
-  function setBoard() {
-    const yLine: JSX.Element[][] = [];
-    for (let y = 1; y <= 10; y++) {
-      const xLine: JSX.Element[] = [];
-      for (let x = 1; x <= 10; x++) {
-        const hasShip = myCoords.find((c) => c.x === x && c.y === y)!.haveShip;
-        const mark = myCoords.find((c) => c.x === x && c.y === y)!.mark;
-        let cell: JSX.Element;
-        if (hasShip && mark) {
-          cell = renderSquare(x, y, {
-            ...boxStyle,
-            background: "red"
-          });
-        }
-        if (!hasShip && mark) {
-          cell = renderSquare(x, y, {
-            ...boxStyle,
-            background: "yellow",
-          });
-        }
-        if (hasShip && !mark) {
-          cell = renderSquare(x, y, {
-            ...boxStyle,
-            background: "green",
-          });
-        }
-        if (!hasShip && !mark) {
-          cell = renderSquare(x, y, {
-            ...boxStyle,
-            background: "white",
-          });
-        }
-        xLine.push(cell!);
-      }
-      yLine.push(xLine);
+  function ChooseCellColor(haveShip: boolean, mark: boolean) {
+    let boxStyle: React.CSSProperties = {
+      width: 40,
+      height: 40,
+      border: "1px solid black",
+      position: "relative",
+      background: "",
+    };
+    if (haveShip && mark) {
+      boxStyle.background = "red";
     }
-    setThisBoard(yLine);
+    if (!haveShip && mark) {
+      boxStyle.background = "yellow";
+    }
+    if (haveShip && !mark) {
+      boxStyle.background = "green";
+    }
+    if (!haveShip && !mark) {
+      boxStyle.background = "white";
+    }
+    return boxStyle;
   }
 
-  function renderSquare(x: number, y: number, color?: React.CSSProperties) {
-    return <div key={"x" + x + " y" + y} style={color}></div>;
-  }
-
-  return <div style={boardStyle}>{board}</div>;
+  return (
+    <div style={boardStyle}>
+      {myCoords.map((coord) => (
+        <div
+          key={"x" + coord.x + " y" + coord.y}
+          style={ChooseCellColor(coord.haveShip, coord.mark)}
+        >x{coord.x}_y{coord.y}</div>
+      ))}
+    </div>
+  );
 };
 
 export default observer(MyBoard);

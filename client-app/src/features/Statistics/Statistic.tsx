@@ -34,18 +34,6 @@ const Statistic = () => {
     getStatistic().then(() => setLoadingNext(false));
   };
 
-  const handleChangeMoveSort = () => {
-    changeMoveSort();
-  };
-
-  const handleChangeSortName = () => {
-    changeSortName();
-  };
-
-  const handleChangeShipCountSort = () => {
-    changeShipCountSort();
-  };
-
   useEffect(() => {
     getStatistic();
   }, [getStatistic, name, filterMoveState, onlyIntactShips, sortOrder]);
@@ -60,17 +48,17 @@ const Statistic = () => {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>
-              <Button basic onClick={() => handleChangeSortName()}>
+              <Button basic onClick={changeSortName}>
                 Winner
               </Button>
             </Table.HeaderCell>
             <Table.HeaderCell>
-              <Button basic onClick={() => handleChangeMoveSort()}>
+              <Button basic onClick={changeMoveSort}>
                 MoveCount
               </Button>
             </Table.HeaderCell>
             <Table.HeaderCell>
-              <Button basic onClick={() => handleChangeShipCountSort()}>
+              <Button basic onClick={changeShipCountSort}>
                 Winner Ships Count
               </Button>
             </Table.HeaderCell>

@@ -6,16 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Nix.StyleCop.Analyzers" Version="1.0.19" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BattleShip.DataAccess\BattleShip.DataAccess.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
 
 	<ItemGroup>

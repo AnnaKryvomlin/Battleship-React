@@ -14,93 +14,44 @@ const EnemyBoard = () => {
   const rootStore = useContext(RootStoreContext);
   const {
     enemyCoords,
-    enemyLoadFlag,
     myMove,
     takeAShot
   } = rootStore.gameStore;
 
-  const [board, setMyBoard] = useState(Array<Array<JSX.Element>>([]));
-
-  useEffect(() => {
-    if (enemyLoadFlag) {
-      setBoard();
-    }
-  }, [myMove, enemyLoadFlag]);
-
   if (rootStore.gameStore.loadingGames)
     return <LoadingComponent content="Loading enemy field" />;
 
-
-  function setBoard() {
-    console.log("set board");
-    const yLine: JSX.Element[][] = [];
-    for (let y = 1; y <= 10; y++) {
-      const xLine: JSX.Element[] = [];
-      for (let x = 1; x <= 10; x++) {
-        const hasShip = enemyCoords.find((c) => c.x === x && c.y === y)!.haveShip;
-        const mark = enemyCoords.find((c) => c.x === x && c.y === y)!.mark;
-        let cell: JSX.Element;
-        if (hasShip && mark) {
-          cell = renderSquare(x, y, {
-            background: "red",
-            width: 40,
-            height: 40,
-            border: "1px solid black",
-            position: "relative",
-          });
-        }
-        if (!hasShip && mark) {
-          cell = renderSquare(x, y, {
-            background: "yellow",
-            width: 40,
-            height: 40,
-            border: "1px solid black",
-            position: "relative",
-          });
-        }
-        if (hasShip && !mark) {
-          cell = renderSquare(x, y, {
-            background: "white",
-            width: 40,
-            height: 40,
-            border: "1px solid black",
-            position: "relative",
-          });
-        }
-        if (!hasShip && !mark) {
-          cell = renderSquare(x, y, {
-            background: "white",
-            width: 40,
-            height: 40,
-            border: "1px solid black",
-            position: "relative",
-          });
-        }
-        xLine.push(cell!);
-      }
-      yLine.push(xLine);
+  function ChooseCellColor(haveShip: boolean, mark: boolean) {
+    let boxStyle: React.CSSProperties = {
+      width: 40,
+      height: 40,
+      border: "1px solid black",
+      position: "relative",
+      background: "",
+    };
+    if (haveShip && mark) {
+      boxStyle.background = "red";
     }
-    console.log(rootStore.gameStore.myMove);
-    setMyBoard(yLine);
+    if (!haveShip && mark) {
+      boxStyle.background = "yellow";
+    }
+    else {
+      boxStyle.background = "white";
+    }
+    return boxStyle;
   }
 
-  const handleTakeAShot = (x: number, y: number) => {
-    console.log("shot!");
-    takeAShot(x, y);
-  };
-
-  function renderSquare(x: number, y: number, color?: React.CSSProperties) {
-    return (
-      <button
-        onClick={() => handleTakeAShot(x, y)}
-        className="move"
-        key={"x" + x + " y" + y}
-        style={color}
-        disabled={!myMove}
-      ></button>
-    );
-  }
-  return <div style={boardStyle}>{board}</div>;
+  return <div style={boardStyle}>
+  {enemyCoords.map((coord) => (
+    <button
+    onClick={() => takeAShot(coord.x, coord.y)}
+    className="move"
+    key={"x" + coord.x + " y" + coord.y}
+    style={ChooseCellColor(coord.haveShip, coord.mark)}
+    disabled={!myMove}
+  ></button>
+  ))}
+</div>;
 };
 
 export default observer(EnemyBoard);

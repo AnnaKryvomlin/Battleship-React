@@ -8,14 +8,6 @@ const PrepareGame = () => {
   const rootStore = useContext(RootStoreContext);
   const { submitting, createNewGame, findGame } = rootStore.gameStore;
 
-  const handleCreateGame = () => {
-    createNewGame();
-  };
-
-  const handleFindGame = () => {
-    findGame();
-  };
-
   return (
     <Grid>
       <Grid.Column width={10}>
@@ -26,13 +18,13 @@ const PrepareGame = () => {
           positive
           loading={submitting}
           content="Create Game"
-          onClick={() => handleCreateGame()}
+          onClick={createNewGame}
         />
         <Button
           primary
           loading={submitting}
           content="Find Game"
-          onClick={() => handleFindGame()}
+          onClick={findGame}
         />
       </Grid.Column>
     </Grid>

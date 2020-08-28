@@ -28,7 +28,7 @@ const BoardSquare: React.FC<BoardSquareProps> = ({
   }
 
   function canMoveShip(ship: IShip) {
-    if (ship.size > 1 && x + ship.size - 1 > 10) return false;
+    if (ship.size > 1 && y + ship.size - 1 > 10) return false;
     if (hasShip) return false;
     return true;
   }

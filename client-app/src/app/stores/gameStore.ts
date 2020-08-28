@@ -1,5 +1,5 @@
 import { RootStore } from "./rootStore";
-import { observable, action, runInAction } from "mobx";
+import { observable, action, runInAction, computed } from "mobx";
 import { IGameForAccount } from "../models/game";
 import agent from "../api/agent";
 import { ICoordinate } from "../models/coordinate";
@@ -26,24 +26,22 @@ export default class GameStore {
   @observable myCoords: ICoordinate[] = [];
   @observable enemyCoords: ICoordinate[] = [];
   @observable gameId: number | null = null;
-  @observable myLoadFlag: boolean = false;
-  @observable enemyLoadFlag: boolean = false;
   @observable records: IRecord[] = [];
   @observable.ref hubConnection: HubConnection | null = null;
   @observable myMove: boolean = false;
   @observable finished = false;
   @observable finishedMessage = "";
   @observable ships: IShip[] = [
-    { x: 1, y: 1, size: 1 },
-    { x: 3, y: 1, size: 1 },
-    { x: 5, y: 1, size: 1 },
-    { x: 7, y: 1, size: 1 },
-    { x: 1, y: 3, size: 2 },
-    { x: 5, y: 3, size: 2 },
-    { x: 8, y: 3, size: 2 },
-    { x: 1, y: 5, size: 3 },
-    { x: 5, y: 5, size: 3 },
-    { x: 1, y: 7, size: 4 },
+    { y: 1, x: 1, size: 1 },
+    { y: 3, x: 1, size: 1 },
+    { y: 5, x: 1, size: 1 },
+    { y: 7, x: 1, size: 1 },
+    { y: 1, x: 3, size: 2 },
+    { y: 5, x: 3, size: 2 },
+    { y: 8, x: 3, size: 2 },
+    { y: 1, x: 5, size: 3 },
+    { y: 5, x: 5, size: 3 },
+    { y: 1, x: 7, size: 4 },
   ];
   @observable shipChange = true;
   @observable submitting = false;
@@ -55,7 +53,7 @@ export default class GameStore {
   }
 
   @action changeShips = () => {
-    this.shipChange === true ? this.shipChange =false : this.shipChange =true;
+    this.shipChange = !this.shipChange;
   }
 
   @action createNewGame = async() => {
@@ -114,8 +112,6 @@ export default class GameStore {
       (result: boolean, x: number, y: number, currentPlayerId: number) => {
         runInAction(() => {
           this.enemyCoords.find((c) => c.x === x && c.y === y)!.mark = true;
-          this.enemyLoadFlag = true;
-          this.myLoadFlag = true;
           this.changeMovePlayer();
         });
       }
@@ -126,12 +122,11 @@ export default class GameStore {
       (x: number, y: number, currentPlayerId: number) => {
         runInAction(() => {
           this.myCoords.find((c) => c.x === x && c.y === y)!.mark = true;
-          this.myLoadFlag = true;
-          this.enemyLoadFlag = true;
           this.changeMovePlayer();
         });
       }
     );
+
     this.hubConnection.on("NewRecord", (record: string) => {
       runInAction(() => {
         const rec: IRecord = { playerMove: record };
@@ -140,30 +135,27 @@ export default class GameStore {
     });
 
     this.hubConnection.on("Finished", (message: string) => {
-      runInAction(() => {
-        this.myMove = false;
-        this.finishedMessage = message;
-        this.finished = true;
-      });
+      this.finishThisGame(message);
     });
 
     this.hubConnection.on("StopGame", (message: string) => {
-      runInAction(() => {
-        this.myMove = false;
-        this.finishedMessage = message;
-        this.finished = true;
-      });
+      this.finishThisGame(message);
     });
   };
 
+  @action finishThisGame= (message: string) => {
+    this.myMove = false;
+    this.finishedMessage = message;
+    this.finished = true;
+  }
+
   @action changeMovePlayer = () => {
-    this.myMove == true ? (this.myMove = false) : (this.myMove = true);
+    this.myMove = !this.myMove;
     console.log("move:" + this.myMove);
   };
 
   @action stopHubConnection = () => {
     this.hubConnection!.stop();
-    this.enemyLoadFlag = false;
   };
 
   @action takeAShot = async (x: number, y: number) => {
@@ -217,14 +209,12 @@ export default class GameStore {
       const coords = await agent.Game.enemyCoordsForGame(this.gameId!);
       runInAction(() => {
         this.enemyCoords = coords;
-        this.enemyLoadFlag = true;
         this.loadingGames = false;
       });
     } catch (error) {
       this.loadingGames = false;
       console.log(error);
     } finally {
-      this.enemyLoadFlag = false;
     }
   };
 
@@ -234,15 +224,12 @@ export default class GameStore {
       const coords = await agent.Game.myCoordsForGame(this.gameId!);
       runInAction(() => {
         this.myCoords = coords;
-        this.myLoadFlag = true;
         this.loadingGames = false;
       });
     } catch (error) {
       this.loadingGames = false;
       console.log(error);
-    } finally {
-      this.myLoadFlag = false;
-    }
+    } 
   };
 
   @action loadProfileGames = async () => {

@@ -39,8 +39,6 @@ namespace BattleShip.API.Controllers
             var pagedRecords = PagedList<StatisticsRecord>.Create(records, page, pageSize);
             var statisticsRecords = mapper.Map<IEnumerable<StatisticsRecord>, List<StatisticView>>(pagedRecords);
 
-            this.Response.AddPagination(pagedRecords.CurrentPage, pagedRecords.PageSize, pagedRecords.TotalCount, pagedRecords.TotalPages);
-
             return this.Ok(new
             {
                 totalPages = pagedRecords.TotalCount,

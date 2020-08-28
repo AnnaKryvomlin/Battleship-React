@@ -16,10 +16,12 @@ namespace BattleShip.API.Controllers
     public class GameController : ControllerBase
     {
         private readonly IGameService gameService;
+        private readonly IMapper mapper;
 
-        public GameController(IGameService service)
+        public GameController(IGameService service, IMapper mapper)
         {
             this.gameService = service;
+            this.mapper = mapper;
         }
 
         [HttpPost("create_game")]
@@ -42,12 +44,12 @@ namespace BattleShip.API.Controllers
             foreach (var s in shipsView)
             {
                 List<Coordinate> coordinates = new List<Coordinate>();
-                for (int x = s.X; x < s.X + s.Size; x++)
+                for (int y = s.Y; y < s.Y + s.Size; y++)
                 {
                     Coordinate coord = new Coordinate
                     {
-                        Y = s.Y,
-                        X = x,
+                        Y = y,
+                        X = s.X,
                     };
                     coordinates.Add(coord);
                 }
@@ -79,12 +81,12 @@ namespace BattleShip.API.Controllers
             foreach (var s in shipsView)
             {
                 List<Coordinate> coordinates = new List<Coordinate>();
-                for (int x = s.X; x < s.X + s.Size; x++)
+                for (int y = s.Y; y < s.Y + s.Size; y++)
                 {
                     Coordinate coord = new Coordinate
                     {
-                        Y = s.Y,
-                        X = x,
+                        Y = y,
+                        X = s.X,
                     };
                     coordinates.Add(coord);
                 }
@@ -101,10 +103,8 @@ namespace BattleShip.API.Controllers
         public IActionResult GetMyCoordinates(int id)
         {
             int playerid = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Coordinate, CoordinateView>()
-            .ForMember("HaveShip", opt => opt.MapFrom(c => c.Ship != null))).CreateMapper();
             var coord = this.gameService.GetCoordinatesForGame(playerid, id);
-            var coordinates = mapper.Map<IEnumerable<Coordinate>, List<CoordinateView>>(coord);
+            var coordinates = this.mapper.Map<List<CoordinateView>>(coord);
             return this.Ok(coordinates);
         }
 
@@ -112,10 +112,8 @@ namespace BattleShip.API.Controllers
         public IActionResult GetEnemyCoordinates(int id)
         {
             int playerid = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Coordinate, CoordinateView>()
-            .ForMember("HaveShip", opt => opt.MapFrom(c => c.Ship != null))).CreateMapper();
             var coord = this.gameService.GetCoordinatesForGame(playerid, id, false);
-            var coordinates = mapper.Map<IEnumerable<Coordinate>, List<CoordinateView>>(coord);
+            var coordinates = this.mapper.Map<List<CoordinateView>>(coord);
             return this.Ok(coordinates);
         }
 
@@ -130,8 +128,7 @@ namespace BattleShip.API.Controllers
         [HttpGet("get_records/{id}")]
         public IActionResult Game(int id)
         {
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Move, RecordsView>()).CreateMapper();
-            var records = mapper.Map<IEnumerable<Move>, List<RecordsView>>(this.gameService.GetAllRecords(id));
+            var records = this.mapper.Map<List<RecordsView>>(this.gameService.GetAllRecords(id));
             return this.Ok(records);
         }
     }

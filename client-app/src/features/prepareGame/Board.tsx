@@ -19,19 +19,20 @@ const Board = () => {
 
   useEffect(() => {
     setBoard();
-  }, [ships, shipChange]);
+  }, [shipChange]);
 
   function setBoard() {
     const yLine: JSX.Element[][] = [];
-    for (let y = 1; y <= 10; y++) {
+    for (let x = 1; x <= 10; x++) {
       const xLine: JSX.Element[] = [];
-      for (let x = 1; x <= 10; x++) {
+      for (let y = 1; y <= 10; y++) {
         const cell = renderSquare(x, y);
         xLine.push(cell);
       }
       yLine.push(xLine);
     }
     setMyBoard(yLine);
+    return(yLine);
   }
 
   function setShip(x: number, y: number) {
@@ -43,9 +44,9 @@ const Board = () => {
 
   function renderSquare(x: number, y: number) {
     const hasShip =
-      !!ships.find((s) => s.x - 1 <= x && s.x + s.size + 1 > x && s.y == y) ||
-      !!ships.find((s) => s.x <= x && s.x + s.size > x && s.y == y - 1) ||
-      !!ships.find((s) => s.x <= x && s.x + s.size > x && s.y == y + 1);
+      !!ships.find((s) => s.y - 1 <= y && s.y + s.size + 1 > y && s.x == x) ||
+      !!ships.find((s) => s.y <= y && s.y + s.size > y && s.x == x - 1) ||
+      !!ships.find((s) => s.y <= y && s.y + s.size > y && s.x == x + 1);
     return (
       <div key={"x" + x + " y" + y}>
         <BoardSquare x={x} y={y} hasShip={hasShip}>

@@ -23,14 +23,18 @@ namespace BattleShip.BusinessLogic.Services
                 Winner = this.db.Players.Get(playerId).UserName,
                 MoveCount = this.db.Moves.GetAll().Where(m => m.GameId == gameId).Count()
             };
+
             this.db.StatisticsRecords.Create(record);
             this.db.Save();
-            var ships = this.db.Ships.GetAll().Where(s => s.Field.GameId == gameId && s.Field.PlayerId == playerId).ToList();
+            var ships = this.db.Ships
+                .GetAll()
+                .Where(s => s.Field.GameId == gameId && s.Field.PlayerId == playerId)
+                .ToList();
             foreach (var ship in ships)
             {
                 int injuredCells = ship.Coordinates.Where(c => c.Mark).Count();
 
-                // if ship isn't killed add it to winner's ships
+                // if ship didn't die add it to winner's ships
                 if (injuredCells != ship.Size)
                 {
                     WinnerShip winnerShip = new WinnerShip

@@ -26,23 +26,27 @@ namespace BattleShip.BusinessLogic.Services
             };
 
             // Check if someone wait a game. If yes - add field and player to the game.
-            var field = this.db.Fields.GetAll().Where(f => f.GameId == null).FirstOrDefault();
+            var field = this.db.Fields
+                .GetAll()
+                .Where(f => f.GameId == null && f.PlayerId != playerId)
+                .FirstOrDefault();
+
+            this.db.Games.Create(game);
+            this.db.Save();
+            game.PlayerGames.Add(new PlayerGame { Game = game, PlayerId = playerId });
+
             if (field != null)
             {
                 game.Status = "In Process";
-                game.PlayerGames.Add(new PlayerGame { GameId = game.Id, PlayerId = field.PlayerId });
-                this.db.Games.Create(game);
-                this.db.Save();
-                field.GameId = game.Id;
+                game.PlayerGames.Add(new PlayerGame { Game = game, PlayerId = field.PlayerId });
+                field.Game = game;
                 this.db.Fields.Update(field);
             }
             else
             {
                 game.Status = "Search";
-                this.db.Games.Create(game);
             }
 
-            game.PlayerGames.Add(new PlayerGame { GameId = game.Id, PlayerId = playerId });
             this.db.Save();
             return game.Id;
         }
@@ -53,9 +57,14 @@ namespace BattleShip.BusinessLogic.Services
             {
                 PlayerId = playerId
             };
+
             if (gameId == null)
             {
-                var playerGame = this.db.PlayerGames.GetAll().Where(pg => pg.PlayerId != playerId && this.db.Games.Get(pg.GameId).Status == "Search").FirstOrDefault();
+                var playerGame = this.db.PlayerGames
+                    .GetAll()
+                    .Where(pg => pg.PlayerId != playerId && this.db.Games.Get(pg.GameId).Status == "Search")
+                    .FirstOrDefault();
+
                 if (playerGame != null)
                 {
                     field.GameId = playerGame.GameId;
@@ -72,9 +81,8 @@ namespace BattleShip.BusinessLogic.Services
 
             this.db.Fields.Create(field);
             this.db.Save();
-            int fieldId = field.Id;
-            this.CreateCoordinats(fieldId);
-            return fieldId;
+            this.CreateCoordinats(field.Id);
+            return field.Id;
         }
 
         public void AddShipsToField(int fieldId, List<Ship> ships)
@@ -87,11 +95,10 @@ namespace BattleShip.BusinessLogic.Services
                     FieldId = fieldId
                 };
                 this.db.Ships.Create(ship);
-                this.db.Save();
                 foreach (var c in s.Coordinates)
                 {
                     var coordinate = this.db.Coordinates.GetAll().Where(coord => coord.X == c.X && coord.Y == c.Y && coord.FieldId == fieldId).FirstOrDefault();
-                    coordinate.ShipId = ship.Id;
+                    coordinate.Ship = ship;
                     this.db.Coordinates.Update(coordinate);
                 }
             }
@@ -102,17 +109,11 @@ namespace BattleShip.BusinessLogic.Services
         // For private account
         public List<Game> GetPlayerGames(int playerId)
         {
-            var playerGames = this.db.PlayerGames.GetAll().Where(pg => pg.PlayerId == playerId).ToList();
-            List<Game> games = new List<Game>();
-            foreach (var pg in playerGames)
-            {
-                if (pg.Game.Status == "In Process")
-                {
-                    games.Add(pg.Game);
-                }
-            }
-
-            return games;
+            return this.db.PlayerGames
+                .GetAll()
+                .Where(pg => pg.PlayerId == playerId && pg.Game.Status == "In Process")
+                .Select(pg => pg.Game)
+                .ToList();
         }
 
         // For moves in the game.
@@ -121,7 +122,10 @@ namespace BattleShip.BusinessLogic.Services
             var game = this.GetGame(gameId);
             coordinate.Mark = true;
             this.db.Coordinates.Update(coordinate);
-            game.CurrentMovePlayerId = this.db.PlayerGames.GetAll().Where(pg => pg.PlayerId != playerId && pg.GameId == game.Id).FirstOrDefault().PlayerId;
+            game.CurrentMovePlayerId = this.db.PlayerGames
+                .GetAll()
+                .Where(pg => pg.PlayerId != playerId && pg.GameId == game.Id)
+                .FirstOrDefault().PlayerId;
             this.db.Games.Update(game);
             this.db.Save();
             return game.CurrentMovePlayerId;
@@ -131,7 +135,8 @@ namespace BattleShip.BusinessLogic.Services
         public Coordinate GetCoordinate(int playerId, int gameId, int x, int y)
         {
             var coordinate = this.db.Coordinates.GetAll()
-                .Where(coord => coord.Field.GameId == gameId && coord.Field.PlayerId != playerId && coord.X == x && coord.Y == y).FirstOrDefault();
+                .Where(coord => coord.Field.GameId == gameId && coord.Field.PlayerId != playerId && coord.X == x && coord.Y == y)
+                .FirstOrDefault();
             return coordinate;
         }
 
@@ -144,7 +149,9 @@ namespace BattleShip.BusinessLogic.Services
         public List<Coordinate> GetCoordinatesForGame(int playerId, int gameId, bool isMine = true)
         {
             int id = isMine ? playerId : this.GetEnemyId(gameId, playerId);
-            var coordinates = this.db.Coordinates.GetAll().Where(c => c.Field.GameId == gameId && c.Field.PlayerId == id).ToList();
+            var coordinates = this.db.Coordinates.GetAll()
+                .Where(c => c.Field.GameId == gameId && c.Field.PlayerId == id)
+                .ToList();
             return coordinates;
         }
 
@@ -167,19 +174,13 @@ namespace BattleShip.BusinessLogic.Services
         {
             var player = this.db.Players.Get(playerId);
             string record = player.UserName + " сделал ход на y = " + y + ", x = " + x;
-            int? shipId = this.db.Coordinates.GetAll().Where(coord => coord.Field.GameId == gameId && coord.Field.PlayerId != playerId && coord.X == x && coord.Y == y).FirstOrDefault().ShipId;
+            int? shipId = this.db.Coordinates.GetAll()
+                .Where(coord => coord.Field.GameId == gameId && coord.Field.PlayerId != playerId && coord.X == x && coord.Y == y)
+                .FirstOrDefault().ShipId;
             if (shipId != null)
             {
                 var ship = this.db.Ships.Get(shipId.Value);
-                bool flag = false;
-                foreach (var coord in ship.Coordinates)
-                {
-                    if (!coord.Mark)
-                    {
-                        flag = true;
-                        break;
-                    }
-                }
+                bool flag = ship.Coordinates.Any(coord => !coord.Mark);
 
                 if (flag)
                 {
@@ -222,21 +223,14 @@ namespace BattleShip.BusinessLogic.Services
 
         private int CheckIfCoordinatesHaveShips(List<Coordinate> coordinates)
         {
-            foreach (var coord in coordinates)
-            {
-                if (coord.ShipId != null && !coord.Mark)
-                {
-                    return 1;
-                }
-            }
-
-            return 0;
+            return coordinates.Any(coord => coord.ShipId != null && !coord.Mark) ? 1 : 0;
         }
 
         private int GetEnemyId(int gameId, int playerId)
         {
-            int enemyId = this.db.PlayerGames.GetAll().Where(pg => pg.GameId == gameId && pg.PlayerId != playerId).FirstOrDefault().PlayerId;
-            return enemyId;
+            return this.db.PlayerGames.GetAll()
+                .Where(pg => pg.GameId == gameId && pg.PlayerId != playerId)
+                .FirstOrDefault().PlayerId;
         }
 
         private void CreateCoordinats(int fieldId)
@@ -252,10 +246,9 @@ namespace BattleShip.BusinessLogic.Services
                         FieldId = fieldId
                     };
                     this.db.Coordinates.Create(coordinate);
+                              this.db.Save();
                 }
             }
-
-            this.db.Save();
         }
     }
 }
